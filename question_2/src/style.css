@@ -1,0 +1,52 @@
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.page-item {
+  margin: 0 5px;
+}
+
+.page-link {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.page-item.active .page-link {
+  background-color: #007bff;
+  color: white;
+}
+
+.sort-container {
+  margin-bottom: 20px;
+}
+
+.sort-button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.sort-options {
+  margin-top: 10px;
+}
+
+.sort-options button {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
