@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import "./style.css";
 import UserData from "./components/UserData";
 import axios from "axios";
-import "./style.css";
+
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -9,16 +10,16 @@ const App = () => {
   const [mySortOrder, setmySortOrder] = useState("asc");
   const [showSortOptions, setShowSortOptions] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const [totalProductsPerPage] = useState(10);
   const [category, setCategory] = useState("Laptop");
 
-  const fetchProducts = async () => {
+  const fetchProductsFunction = async () => {
     try {
       const response = await axios.get(
         `http://localhost:3000/categories/${category}/products`,
         {
           params: {
-            n: productsPerPage * currentPage,
+            n: totalProductsPerPage * currentPage,
             sort: sortKey,
             order: mySortOrder,
             minPrice: 1,
@@ -41,7 +42,7 @@ const App = () => {
       setmySortOrder("asc");
     }
     setShowSortOptions(false);
-    fetchProducts();
+    fetchProductsFunction();
   };
 
   const sortSymbol = (key) => {
@@ -51,9 +52,9 @@ const App = () => {
     return "";
   };
 
-  const indexLast = currentPage * productsPerPage;
-  const indexForMyFirstProduct = indexLast - productsPerPage;
-  const currentProducts = products.slice(
+  const indexLast = currentPage * totalProductsPerPage;
+  const indexForMyFirstProduct = indexLast - totalProductsPerPage;
+  const renderedProducts = products.slice(
     indexForMyFirstProduct,
     indexLast
   );
@@ -61,12 +62,12 @@ const App = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
-    fetchProducts();
+    fetchProductsFunction();
   }, [category, currentPage, sortKey, mySortOrder]);
 
   const paginationFunction = () => {
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(products.length / productsPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(products.length / totalProductsPerPage); i++) {
       pageNumbers.push(i);
     }
     return (
@@ -89,7 +90,7 @@ const App = () => {
             </button>
           </li>
         ))}
-        {currentPage < Math.ceil(products.length / productsPerPage) && (
+        {currentPage < Math.ceil(products.length / totalProductsPerPage) && (
           <li className="page-item">
             <button
               onClick={() => paginate(currentPage + 1)}
@@ -164,7 +165,7 @@ const App = () => {
         </thead>
         <tbody>
           <UserData
-            products={currentProducts}
+            products={renderedProducts}
             sortKey={sortKey}
             mySortOrder={mySortOrder}
           />

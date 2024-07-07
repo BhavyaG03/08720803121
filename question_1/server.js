@@ -3,8 +3,8 @@ const axios = require("axios");
 const app = express();
 const port = 3000;
 
-const clientID = "97af5dd1-5cb9-470c-b7d8-09c014455c93";
-const clientSecret = "mgKoWJfejrwyrwAp";
+const myClientID = "97af5dd1-5cb9-470c-b7d8-09c014455c93";
+const myClientSecret = "mgKoWJfejrwyrwAp";
 const testURL = "http://20.244.56.144/test";
 const minPrice = 0;
 const cors = require("cors");
@@ -14,8 +14,8 @@ const authenticate = async () => {
   try {
     const response = await axios.post(`${testURL}/auth`, {
       companyName: "Bhavya",
-      clientID: clientID,
-      clientSecret: clientSecret,
+      clientID: myClientID,
+      clientSecret: myClientSecret,
       ownerName: "Bhavya",
       ownerEmail: "gulatibhavya30@gmail.com",
       rollNo: "08720803121",
@@ -67,9 +67,9 @@ app.get("/categories/:categoryName/products", async (req, res) => {
     }
 
     const start = (page - 1) * n;
-    const paginatedProducts = allProducts.slice(start, start + n);
+    const myPaginationProducts = allProducts.slice(start, start + n);
 
-    res.json(paginatedProducts);
+    res.json(myPaginationProducts);
   } catch (error) {
     console.error("Error fetching products:", error.response.data);
     res
