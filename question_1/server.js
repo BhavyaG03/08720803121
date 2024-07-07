@@ -5,14 +5,14 @@ const port = 3000;
 
 const clientID = "97af5dd1-5cb9-470c-b7d8-09c014455c93";
 const clientSecret = "mgKoWJfejrwyrwAp";
-const testServerBaseURL = "http://20.244.56.144/test";
+const testURL = "http://20.244.56.144/test";
 const minPrice = 0;
 const cors = require("cors");
 app.use(cors());
 let accessToken = "";
 const authenticate = async () => {
   try {
-    const response = await axios.post(`${testServerBaseURL}/auth`, {
+    const response = await axios.post(`${testURL}/auth`, {
       companyName: "Bhavya",
       clientID: clientID,
       clientSecret: clientSecret,
@@ -50,7 +50,7 @@ app.get("/categories/:categoryName/products", async (req, res) => {
 
     for (const company of companyNames) {
       const response = await axios.get(
-        `${testServerBaseURL}/companies/${company}/categories/${categoryName}/products`,
+        `${testURL}/companies/${company}/categories/${categoryName}/products`,
         {
           params: { top: n, minPrice: minPrice, maxPrice },
           headers: { Authorization: `Bearer ${accessToken}` },
@@ -78,7 +78,6 @@ app.get("/categories/:categoryName/products", async (req, res) => {
   }
 });
 
-// Start server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

@@ -6,11 +6,11 @@ import "./style.css";
 const App = () => {
   const [products, setProducts] = useState([]);
   const [sortKey, setSortKey] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [mySortOrder, setmySortOrder] = useState("asc");
   const [showSortOptions, setShowSortOptions] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
-  const [category, setCategory] = useState("Laptop"); // Default category
+  const [category, setCategory] = useState("Laptop");
 
   const fetchProducts = async () => {
     try {
@@ -20,7 +20,7 @@ const App = () => {
           params: {
             n: productsPerPage * currentPage,
             sort: sortKey,
-            order: sortOrder,
+            order: mySortOrder,
             minPrice: 1,
             maxPrice: 10000,
           },
@@ -33,38 +33,38 @@ const App = () => {
     }
   };
 
-  const handleSort = (key) => {
+  const sortLogic = (key) => {
     if (sortKey === key) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+      setmySortOrder(mySortOrder === "asc" ? "desc" : "asc");
     } else {
       setSortKey(key);
-      setSortOrder("asc");
+      setmySortOrder("asc");
     }
     setShowSortOptions(false);
     fetchProducts();
   };
 
-  const sortIcon = (key) => {
+  const sortSymbol = (key) => {
     if (sortKey === key) {
-      return sortOrder === "asc" ? "▲" : "▼";
+      return mySortOrder === "asc" ? "▲" : "▼";
     }
     return "";
   };
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const indexLast = currentPage * productsPerPage;
+  const indexForMyFirstProduct = indexLast - productsPerPage;
   const currentProducts = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
+    indexForMyFirstProduct,
+    indexLast
   );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     fetchProducts();
-  }, [category, currentPage, sortKey, sortOrder]);
+  }, [category, currentPage, sortKey, mySortOrder]);
 
-  const renderPagination = () => {
+  const paginationFunction = () => {
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(products.length / productsPerPage); i++) {
       pageNumbers.push(i);
@@ -141,14 +141,14 @@ const App = () => {
         </button>
         {showSortOptions && (
           <div className="sort-options">
-            <button onClick={() => handleSort("price")}>
-              Price {sortIcon("price")}
+            <button onClick={() => sortLogic("price")}>
+              Price {sortSymbol("price")}
             </button>
-            <button onClick={() => handleSort("rating")}>
-              Rating {sortIcon("rating")}
+            <button onClick={() => sortLogic("rating")}>
+              Rating {sortSymbol("rating")}
             </button>
-            <button onClick={() => handleSort("discount")}>
-              Discount {sortIcon("discount")}
+            <button onClick={() => sortLogic("discount")}>
+              Discount {sortSymbol("discount")}
             </button>
           </div>
         )}
@@ -166,11 +166,11 @@ const App = () => {
           <UserData
             products={currentProducts}
             sortKey={sortKey}
-            sortOrder={sortOrder}
+            mySortOrder={mySortOrder}
           />
         </tbody>
       </table>
-      {renderPagination()}
+      {paginationFunction()}
     </>
   );
 };
